@@ -1,6 +1,6 @@
 const dns = require('dns');
 
-const DNSLINK_REGEX = /^dnslink=.+/;
+const DNSLINK_REGEX = /^dnslink=.+$/;
 
 /**
  * Return the string path that is dnslinked in the txt records.
