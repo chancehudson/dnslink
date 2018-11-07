@@ -3,6 +3,7 @@
   "version": "0.0.2",
   "description": "Resolve dnslink TXT records for domains",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "node index.test.js"
   },
