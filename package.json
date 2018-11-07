@@ -1,0 +1,19 @@
+{
+  "name": "dnslink",
+  "version": "0.0.1",
+  "description": "Resolve dnslink TXT records for domains",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/common-theory/dnslink.git"
+  },
+  "author": "Chance Hudson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/common-theory/dnslink/issues"
+  },
+  "homepage": "https://github.com/common-theory/dnslink#readme"
+}
