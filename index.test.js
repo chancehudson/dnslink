@@ -8,5 +8,6 @@ function random() {
 
 assert.rejects(() => dnslink(`${random()}.commontheory.io`));
 assert.doesNotReject(() => dnslink(`commontheory.io`));
+assert.doesNotReject(() => dnslink(`coverage.commontheory.io`));
 
 console.log('Test passed');
