@@ -19,11 +19,14 @@ module.exports = function dnslink(_domain) {
       const dnslinks = flatRecords.filter(item => {
         return DNSLINK_REGEX.test(item);
       });
-      if (!dnslink) {
-        rj('Unable to find dnslink TXT record for domain');
+      if (dnslinks.length > 1) {
+        rj(`Found multiple dnslink entries for ${domain}. Rejecting as there should only be 1.`);
+        return;
+      } else if (dnslinks.length === 0) {
+        rj(`Unable to find dnslink TXT record for domain ${domain}`);
         return;
       }
-      rs(dnslink.slice('dnslink='.length));
+      rs(dnslinks[0].slice('dnslink='.length));
     });
   });
 }
