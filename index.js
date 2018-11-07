@@ -10,7 +10,7 @@ module.exports = function dnslink(domain) {
     dns.resolveTxt(domain, (err, records) => {
       if (err) return rj(err);
       const flatRecords = [].concat(...records);
-      const dnslink = flatRecords.find((item: string) => {
+      const dnslink = flatRecords.find(item => {
         return DNSLINK_REGEX.test(item);
       });
       if (!dnslink) {
