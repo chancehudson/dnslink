@@ -1,11 +1,11 @@
-import dns from 'dns';
+const dns = require('dns');
 
 const DNSLINK_REGEX = /^dnslink=.+/;
 
 /**
  * Return the string path that is dnslinked in the txt records.
  **/
-export default function dnslink(domain) {
+module.exports = function dnslink(domain) {
   return new Promise((rs, rj) => {
     dns.resolveTxt(domain, (err, records) => {
       if (err) return rj(err);
