@@ -1,6 +1,6 @@
 # dnslink [![Build Status](https://travis-ci.org/common-theory/dnslink.svg?branch=master)](https://travis-ci.org/common-theory/dnslink) [![npm](https://img.shields.io/npm/v/dnslink.svg)](https://www.npmjs.com/package/dnslink) [![npm type definitions](https://img.shields.io/npm/types/dnslink.svg)](https://github.com/common-theory/dnslink)
 
-A javascript [dnslink](https://docs.ipfs.io/guides/concepts/dnslink/) resolution implementation. See the [go-dnslink](https://github.com/ipfs/go-dnslink) for more information.
+A javascript [dnslink](https://docs.ipfs.io/guides/concepts/dnslink/) resolution implementation. See [ipfs/go-dnslink](https://github.com/ipfs/go-dnslink) for more information.
 
 ## Usage
 
@@ -28,12 +28,12 @@ await update('commontheory.io', '/ipfs/QmStyTZJJugmdFub1GBBGhtXpwxghT4EGvBCz8jNS
 
 // promises
 update('commontheory.io', '/ipfs/QmStyTZJJugmdFub1GBBGhtXpwxghT4EGvBCz8jNSLdBcy')
-  .then(cid => /* Your logic */);
+  .then(() => /* Your logic */);
 ```
 
 ### `resolve`
 
-Get the CID associated with a domain.
+Get the CID associated with a domain. This evaluates via the DNS, not IPFS.
 
 #### Command Line
 
