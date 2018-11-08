@@ -1,6 +1,6 @@
 # dnslink [![Build Status](https://travis-ci.org/common-theory/dnslink.svg?branch=master)](https://travis-ci.org/common-theory/dnslink) [![npm](https://img.shields.io/npm/v/dnslink.svg)](https://www.npmjs.com/package/dnslink) [![npm type definitions](https://img.shields.io/npm/types/dnslink.svg)](https://github.com/common-theory/dnslink)
 
-A javascript [dnslink](https://docs.ipfs.io/guides/concepts/dnslink/) resolution implementation.
+A javascript [dnslink](https://docs.ipfs.io/guides/concepts/dnslink/) resolution implementation. See the [go-dnslink](https://github.com/ipfs/go-dnslink) for more information.
 
 ## Usage
 
@@ -13,7 +13,7 @@ Create a dnslink binding via digitalocean.
 An environment variable called `DIGITAL_OCEAN_TOKEN` should be set.
 
 ```sh
-$ dnslink update commontheory.io /ipfs/QmStyTZJJugmdFub1GBBGhtXpwxghT4EGvBCz8jNSLdBcy
+$ jsdnslink update commontheory.io /ipfs/QmStyTZJJugmdFub1GBBGhtXpwxghT4EGvBCz8jNSLdBcy
 Unable to find dnslink record, creating a new one
 DNS record updated
 ```
@@ -38,7 +38,7 @@ Get the CID associated with a domain.
 #### Command Line
 
 ```sh
-$ dnslink resolve commontheory.io
+$ jsdnslink resolve commontheory.io
 /ipfs/QmStyTZJJugmdFub1GBBGhtXpwxghT4EGvBCz8jNSLdBcy
 ```
 

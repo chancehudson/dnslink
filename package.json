@@ -4,7 +4,7 @@
   "description": "Resolve dnslink TXT records for domains",
   "main": "index.js",
   "bin": {
-    "dnslink": "./cli.js"
+    "jsdnslink": "./cli.js"
   },
   "types": "index.d.ts",
   "scripts": {
