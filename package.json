@@ -3,6 +3,9 @@
   "version": "0.0.4",
   "description": "Resolve dnslink TXT records for domains",
   "main": "index.js",
+  "bin": {
+    "jsdnslink": "./cli.js"
+  },
   "types": "index.d.ts",
   "scripts": {
     "test": "node index.test.js"
