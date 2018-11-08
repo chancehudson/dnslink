@@ -1,4 +1,6 @@
-const dns = require('dns');
+// Promisify the resolveTxt dns function
+// https://nodejs.org/api/dns.html#dns_dns_resolvetxt_hostname_callback
+const resolveTxt = promisify(require('dns').resolveTxt);
 
 const ERR_NOT_FOUND = 'Unable to find dnslink TXT record for domain';
 const ERR_MULT_FOUND = 'Found multiple dnslink TXT entries, expected one for domain';
@@ -46,11 +48,13 @@ async function getDnslinkValue(domain) {
   return dnslinks[0].slice('dnslink='.length);
 }
 
-function resolveTxt(domain) {
-  return new Promise((rs, rj) => {
-    dns.resolveTxt(domain, (err, records) => {
-      if (err) return rj(err);
-      rs(records);
+function promisify(fn) {
+  return (...args) => {
+    return new Promise((rs, rj) => {
+      fn(...args, (err, ..._args) => {
+        if (err) return rj(err);
+        rs(..._args);
+      });
     });
-  });
+  };
 }
