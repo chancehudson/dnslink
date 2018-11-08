@@ -10,9 +10,6 @@ module.exports = async function dnslink(domain) {
    * domain is the raw input
    * We need to check domain.com and _dnslink.domain.com
    **/
-  const domainParts = domain.split('.');
-  domainParts.unshift('_dnslink');
-  const _dnslinkDomain = domainParts.join('.');
   try {
     return await getDnslinkValue(domain);
   } catch (err) {
@@ -21,6 +18,7 @@ module.exports = async function dnslink(domain) {
      * If this doesn't work then the record probably isn't there and we should
      * let the error propagate out from this function
      **/
+    const _dnslinkDomain = ['_dnslink', ...domain.split('.')];
     return await getDnslinkValue(_dnslinkDomain);
   }
 }
