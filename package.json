@@ -4,7 +4,7 @@
   "description": "Resolve dnslink TXT records for domains",
   "main": "index.js",
   "bin": {
-    "jsdnslink": "./cli.js"
+    "dnslink": "./cli.js"
   },
   "types": "index.d.ts",
   "scripts": {
@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/common-theory/dnslink/issues"
   },
-  "homepage": "https://github.com/common-theory/dnslink#readme"
+  "homepage": "https://github.com/common-theory/dnslink#readme",
+  "dependencies": {
+    "digitalocean": "^1.2.0"
+  }
 }
