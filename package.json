@@ -1,6 +1,6 @@
 {
   "name": "dnslink",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Resolve dnslink TXT records for domains",
   "main": "index.js",
   "bin": {
