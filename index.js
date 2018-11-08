@@ -5,14 +5,32 @@ const DNSLINK_REGEX = /^dnslink=.+$/;
 /**
  * Return the string path that is dnslinked in the txt records.
  **/
-module.exports = async function dnslink(_domain) {
-  const domainParts = _domain.split('.');
-  // We've got a subdomain, add _dnslink subdomain prefix
-  if (domainParts.length > 2) {
-    domainParts.unshift('_dnslink');
+module.exports = async function dnslink(domain) {
+  /**
+   * domain is the raw input
+   * We need to check domain.com and _dnslink.domain.com
+   **/
+  const domainParts = domain.split('.');
+  domainParts.unshift('_dnslink');
+  const _dnslinkDomain = domainParts.join('.');
+  try {
+    return await getDnslinkValue(domain);
+  } catch (err) {
+    /**
+     * The input domain didn't work, let's try _dnslink.domain.com
+     * If this doesn't work then the record probably isn't there and we should
+     * let the error propagate out from this function
+     **/
+    return await getDnslinkValue(_dnslinkDomain);
   }
-  const domain = domainParts.join('.');
+}
 
+/**
+ * Returns the value contents after the = sign in a dnslink TXT entry
+ *
+ * Throws if no dnslink record is found, or if multiple are found
+ **/
+async function getDnslinkValue(domain) {
   const records = await resolveTxt(domain);
   const flatRecords = [].concat(...records);
   const dnslinks = flatRecords.filter(item => {
