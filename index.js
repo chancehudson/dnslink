@@ -1,6 +1,7 @@
 const dns = require('dns');
 
-const DNSLINK_REGEX = /^dnslink=.+$/;
+const ERR_NOT_FOUND = 'Unable to find dnslink TXT record for domain';
+const ERR_MULT_FOUND = 'Found multiple dnslink TXT entries, expected one for domain';
 
 /**
  * Return the string path that is dnslinked in the txt records.
@@ -13,6 +14,8 @@ module.exports = async function dnslink(domain) {
   try {
     return await getDnslinkValue(domain);
   } catch (err) {
+    // Only check for _dnslink subdomain if it's a not found error
+    if (err.message.indexOf(ERR_NOT_FOUND) === -1) throw err;
     /**
      * The input domain didn't work, let's try _dnslink.domain.com
      * If this doesn't work then the record probably isn't there and we should
@@ -29,15 +32,16 @@ module.exports = async function dnslink(domain) {
  * Throws if no dnslink record is found, or if multiple are found
  **/
 async function getDnslinkValue(domain) {
+  const DNSLINK_REGEX = /^dnslink=.+$/;
   const records = await resolveTxt(domain);
   const flatRecords = [].concat(...records);
   const dnslinks = flatRecords.filter(item => {
     return DNSLINK_REGEX.test(item);
   });
   if (dnslinks.length > 1) {
-    throw new Error(`Found multiple dnslink entries for ${domain}. Rejecting as there should only be 1.`);
+    throw new Error(`${ERR_MULT_FOUND} ${domain}`);
   } else if (dnslinks.length === 0) {
-    throw new Error(`Unable to find dnslink TXT record for domain ${domain}`);
+    throw new Error(`${ERR_NOT_FOUND} ${domain}`);
   }
   return dnslinks[0].slice('dnslink='.length);
 }
