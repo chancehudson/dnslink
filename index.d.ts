@@ -1,3 +1,4 @@
 declare module 'dnslink' {
-  export default function dnslink(domain: string): Promise<string>;
+  function resolve(domain: string): Promise<string>;
+  function update(domain: string, cid: string): Promise<void>;
 }

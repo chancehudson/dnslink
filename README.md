@@ -2,4 +2,59 @@
 
 A javascript [dnslink](https://docs.ipfs.io/guides/concepts/dnslink/) resolution implementation.
 
+## Usage
+
+### `update`
+
+#### Command Line
+
+Create a dnslink binding via digitalocean.
+
+An environment variable called `DIGITAL_OCEAN_TOKEN` should be set.
+
+```sh
+$ dnslink update commontheory.io /ipfs/QmStyTZJJugmdFub1GBBGhtXpwxghT4EGvBCz8jNSLdBcy
+Unable to find dnslink record, creating a new one
+DNS record updated
+```
+
+#### JS/TS
+
+```ts
+import { update } from 'dnslink';
+
+// async/await
+await update('commontheory.io', '/ipfs/QmStyTZJJugmdFub1GBBGhtXpwxghT4EGvBCz8jNSLdBcy');
+
+// promises
+update('commontheory.io', '/ipfs/QmStyTZJJugmdFub1GBBGhtXpwxghT4EGvBCz8jNSLdBcy')
+  .then(cid => /* Your logic */);
+```
+
+### `resolve`
+
+Get the CID associated with a domain.
+
+#### Command Line
+
+```sh
+$ dnslink resolve commontheory.io
+/ipfs/QmStyTZJJugmdFub1GBBGhtXpwxghT4EGvBCz8jNSLdBcy
+```
+
+#### JS/TS
+
+```ts
+import { resolve } from 'dnslink';
+
+// async/await
+const cid = await resolve('commontheory.io');
+
+// promises
+resolve('commontheory.io')
+  .then(cid => /* Your logic */);
+```
+
+## Note
+
 This package is not maintained by, or affiliated with IPFS or Protocol Labs.
