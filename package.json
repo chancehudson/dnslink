@@ -23,7 +23,6 @@
   "dependencies": {
     "@ctheory/promisify": "0.0.1",
     "digitalocean": "^1.2.0",
-    "request": "git+https://github.com/JChanceHud/request.git",
-    "yargs": "^12.0.2"
+    "yargs": "^12.0.5"
   }
 }
