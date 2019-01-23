@@ -19,13 +19,13 @@ module.exports = async domain => {
     return await getDnslinkValue(domain);
   } catch (err) {
     // Only check for _dnslink subdomain if it's a not found error
-    if (err.message.indexOf(ERR_NOT_FOUND) === -1) throw err;
+    if (err.code !== 'ENOTFOUND' && domain.indexOf('_dnslink') !== -1) throw err;
     /**
      * The input domain didn't work, let's try _dnslink.domain.com
      * If this doesn't work then the record probably isn't there and we should
      * let the error propagate out from this function
      **/
-    const _dnslinkDomain = ['_dnslink', ...domain.split('.')];
+    const _dnslinkDomain = ['_dnslink', ...domain.split('.')].join('.');
     return await getDnslinkValue(_dnslinkDomain);
   }
 }
