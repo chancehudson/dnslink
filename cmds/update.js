@@ -12,7 +12,7 @@ module.exports = async (domainArg, cidArg) => {
   const subdomain = domainParts.slice(0, -2).join('.') || '@';
 
   // The record name
-  const name = subdomain !== '@' || subdomain.indexOf('_dnslink') === -1 ? `_dnslink.${subdomain}` : subdomain;
+  const name = subdomain !== '@' && subdomain.indexOf('_dnslink') === -1 ? `_dnslink.${subdomain}` : subdomain;
 
   const domains = await client.domains.list();
   const records = await client.domains.listRecords(rootDomain);
