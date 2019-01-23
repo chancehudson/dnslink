@@ -11,12 +11,15 @@ module.exports = async (domainArg, cidArg) => {
   const rootDomain = domainParts.slice(-2).join('.');
   const subdomain = domainParts.slice(0, -2).join('.') || '@';
 
+  // The record name
+  const name = subdomain !== '@' || subdomain.indexOf('_dnslink') === -1 ? `_dnslink.${subdomain}` : subdomain;
+
   const domains = await client.domains.list();
   const records = await client.domains.listRecords(rootDomain);
   const dnslinkRecord = records.find(record => {
     if (record.type !== 'TXT') return false;
     if (record.data.indexOf('dnslink=') === -1) return false;
-    if (record.name !== subdomain) return false;
+    if (record.name !== name) return false;
     return record;
   });
   const recordData = `dnslink=${cidArg}`;
@@ -24,7 +27,7 @@ module.exports = async (domainArg, cidArg) => {
     console.log('Unable to find dnslink record, creating a new one');
     await client.domains.createRecord(rootDomain, {
       type: 'TXT',
-      name: subdomain === '@' ? '_dnslink' : subdomain,
+      name,
       data: recordData,
       ttl: 360
     });
