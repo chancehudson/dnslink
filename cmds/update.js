@@ -24,7 +24,7 @@ module.exports = async (domainArg, cidArg) => {
     console.log('Unable to find dnslink record, creating a new one');
     await client.domains.createRecord(rootDomain, {
       type: 'TXT',
-      name: subdomain,
+      name: subdomain === '@' ? '_dnslink' : subdomain,
       data: recordData,
       ttl: 360
     });
