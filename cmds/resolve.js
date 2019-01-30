@@ -4,9 +4,6 @@ const dns = require('dns');
 const { promisify } = require('@ctheory/promisify');
 const resolveTxt = promisify(dns.resolveTxt);
 
-const ERR_NOT_FOUND = 'Unable to find dnslink TXT record for domain';
-const ERR_MULT_FOUND = 'Found multiple dnslink TXT entries, expected one for domain';
-
 /**
  * Return the string path that is dnslinked in the txt records.
  **/
@@ -19,14 +16,13 @@ module.exports = async domain => {
     return await getDnslinkValue(domain);
   } catch (err) {
     // Only check for _dnslink subdomain if it's a not found error
-    if (err.code !== 'ENOTFOUND' && domain.indexOf('_dnslink') !== -1) throw err;
-    /**
-     * The input domain didn't work, let's try _dnslink.domain.com
-     * If this doesn't work then the record probably isn't there and we should
-     * let the error propagate out from this function
-     **/
-    const _dnslinkDomain = ['_dnslink', ...domain.split('.')].join('.');
-    return await getDnslinkValue(_dnslinkDomain);
+    if (err.code !== 'ENOTFOUND') throw err;
+    // If we're checking a _dnslink domain check the regular
+    if (domain.startsWith('_dnslink.')) {
+      return await getDnslinkValue(domain.replace('_dnslink.', ''));
+    }
+    // Otherwise check the _dnslink subdomain
+    return await getDnslinkValue(`_dnslink.${domain}`);
   }
 }
 
@@ -43,9 +39,13 @@ async function getDnslinkValue(domain) {
     return DNSLINK_REGEX.test(item);
   });
   if (dnslinks.length > 1) {
-    throw new Error(`${ERR_MULT_FOUND} ${domain}`);
+    const error = new Error(`Found multiple dnslink TXT entries for domain ${domain}`);
+    error.code = 'ERR_MULT_FOUND';
+    throw error;
   } else if (dnslinks.length === 0) {
-    throw new Error(`${ERR_NOT_FOUND} ${domain}`);
+    const error = new Error(`Unable to find dnslink TXT record for domain ${domain}`);
+    error.code = 'ENOTFOUND';
+    throw error;
   }
   return dnslinks[0].slice('dnslink='.length);
 }
