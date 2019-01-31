@@ -12,10 +12,9 @@ module.exports = async (domainArg, cidArg) => {
   const subdomain = domainParts.slice(0, -2).join('.') || '@';
 
   // The record name
-  const name = subdomain !== '@' && subdomain.indexOf('_dnslink') === -1 ? `_dnslink.${subdomain}` : subdomain;
+  const name = (subdomain !== '@' && !subdomain.startsWith('_dnslink.')) ? `_dnslink.${subdomain}` : subdomain;
 
-  const domains = await client.domains.list();
-  const records = await client.domains.listRecords(rootDomain);
+  const records = await listAllRecords(rootDomain);
   const dnslinkRecord = records.find(record => {
     if (record.type !== 'TXT') return false;
     if (record.data.indexOf('dnslink=') === -1) return false;
@@ -39,3 +38,17 @@ module.exports = async (domainArg, cidArg) => {
   }
   console.log('DNS record updated')
 };
+
+/**
+ * Loads all pages of domain records from digitalocean
+ **/
+async function listAllRecords(domain) {
+  const records = [];
+  let loadedRecords = [];
+  let page = 0;
+  do {
+    loadedRecords = await client.domains.listRecords(domain, page++);
+    records.push(...loadedRecords);
+  } while (loadedRecords.length !== 0);
+  return records;
+}
