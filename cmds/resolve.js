@@ -16,7 +16,7 @@ module.exports = async domain => {
     return await getDnslinkValue(domain);
   } catch (err) {
     // Only check for _dnslink subdomain if it's a not found error
-    if (err.code !== 'ENOTFOUND') throw err;
+    if (err.code !== 'ENOTFOUND' && err.code !== 'ENODATA') throw err;
     // If we're checking a _dnslink domain check the regular
     if (domain.startsWith('_dnslink.')) {
       return await getDnslinkValue(domain.replace('_dnslink.', ''));
